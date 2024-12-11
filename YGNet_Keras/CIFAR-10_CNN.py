@@ -203,8 +203,7 @@ def main():
         print("---- Training starts ----\n ")
 
         # mycnnHistory = mycnn.fit(Xtrain, ytrain, validation_data=(Xtest, ytest), epochs=totalEpochs, batch_size=batchSize, verbose = 1, callbacks=[csv_logger])
-        # mycnnHistory = mycnn.fit(datagen.flow(Xtrain, ytrain, batch_size=batchSize), steps_per_epoch = int(np.ceil(len(Xtrain) / batchSize)), epochs=totalEpochs, validation_data=(Xtest, ytest), verbose=0, callbacks=[csv_logger])
-        mycnnHistory = mycnn.fit(datagen.flow(Xtrain, ytrain, batch_size=batchSize), epochs=totalEpochs, validation_data=(Xtest, ytest), verbose=0, callbacks=[csv_logger])
+        mycnnHistory = mycnn.fit(datagen.flow(Xtrain, ytrain, batch_size=batchSize), steps_per_epoch = int(np.ceil(len(Xtrain) / batchSize)), epochs=totalEpochs, validation_data=(Xtest, ytest), verbose=1, callbacks=[csv_logger])
 
         print("---- Training ends ----\n")
         print("Average time taken by each epoch for training is: ", round(time.time() - start_time, 2)/totalEpochs, 's')
