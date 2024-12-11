@@ -5,10 +5,11 @@ Copyright © 2020 Yogesh Gajjar. All rights reserved.
 
 import keras
 from keras.datasets import cifar10
-from keras.preprocessing.image import ImageDataGenerator
+import tensorflow
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 from keras.layers import Dropout, Activation, Conv2D, GlobalAveragePooling2D, MaxPooling2D, Flatten, Dense, BatchNormalization
-from keras.utils import np_utils
+# from keras.utils import np_utils
 from keras.optimizers import SGD, RMSprop
 from matplotlib import pyplot as plt
 from keras.callbacks import CSVLogger
@@ -181,7 +182,7 @@ def main():
     mycnn = myCNNArchitecture()
     
     
-    optim = SGD(lr=learningRate, decay=weightDecay , momentum=0.9, nesterov=True)
+    optim = SGD(learning_rate=learningRate, decay=weightDecay , momentum=0.9, nesterov=True)
     mycnn.compile(loss='categorical_crossentropy', optimizer=optim, metrics=['accuracy'])
 
     datagen = ImageDataGenerator(
@@ -202,7 +203,7 @@ def main():
         print("---- Training starts ----\n ")
 
         # mycnnHistory = mycnn.fit(Xtrain, ytrain, validation_data=(Xtest, ytest), epochs=totalEpochs, batch_size=batchSize, verbose = 1, callbacks=[csv_logger])
-        mycnnHistory = mycnn.fit_generator(datagen.flow(Xtrain, ytrain, batch_size=batchSize), steps_per_epoch = len(Xtrain) / batchSize, epochs=totalEpochs, validation_data=(Xtest, ytest), verbose=0, callbacks=[csv_logger])
+        mycnnHistory = mycnn.fit(datagen.flow(Xtrain, ytrain, batch_size=batchSize), steps_per_epoch = int(np.ceil(len(Xtrain) / batchSize)), epochs=totalEpochs, validation_data=(Xtest, ytest), verbose=0, callbacks=[csv_logger])
 
         print("---- Training ends ----\n")
         print("Average time taken by each epoch for training is: ", round(time.time() - start_time, 2)/totalEpochs, 's')
